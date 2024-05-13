@@ -1,0 +1,46 @@
+// ==UserScript==
+// @name        coins.bank.gov.ua
+// @namespace   Violentmonkey Scripts
+// @match       https://coins.bank.gov.ua/*
+// @version     0.1a
+// @author      Chivas & BOGOFEY
+// @description 30.04.2024, 20:27:49
+// ==/UserScript==
+
+(function() {
+    'use strict';
+    const reloadInterval = 5000;
+    const scriptInterval = 1000;
+
+    const buyButton = document.querySelector('button[class^="btn-primary buy"]');
+    const inCartButton = document.querySelector('div[id^="r_buy_intovar"]');
+
+    var Clicked = false;
+
+    function clickButton() {
+        if (buyButton) {
+            buyButton.click();
+            console.log('Clicked!');
+        }
+    }
+
+    function checkButton() {
+        if (buyButton && Clicked == false) {
+            clickButton();
+            Clicked = true;
+        } else if (inCartButton) {
+            Clicked == false;
+            clearInterval(refreshInterval); // Stop refreshing if inCartButton is found
+        } else {
+            console.log('No button found!');
+        }
+    }
+
+    var refreshInterval = setInterval(function() {
+        console.log('Refreshing page...');
+        window.location.reload();
+    }, reloadInterval);
+
+    setInterval(checkButton, scriptInterval);
+})();
+
